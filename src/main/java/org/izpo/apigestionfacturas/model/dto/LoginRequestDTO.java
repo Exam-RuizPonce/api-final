@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class LoginRequestDTO {
-    @Email(message = "tiene que tener la estructura de un ")
+    @Email(message = "tiene que tener la estructura de un email")
     private String email;
     @NotBlank(message = "El password no puede ser nulo")
     private String password;

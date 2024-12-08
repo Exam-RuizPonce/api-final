@@ -42,9 +42,10 @@ public class UserService {
             throw new BadRequestException("El email ya existe");
         }
         newUser.setRol("Usuario Comun");
-        newUser.setEstado("false");
+        newUser.setEstado("true");
         return userMapper.convertToDTO(userRepository.save(newUser));
     }
+
     public LoginResponseDTO loginUser(LoginRequestDTO loginRequestDTO) {
         try {
             Authentication authentication = authenticationManager.authenticate(
@@ -56,6 +57,9 @@ public class UserService {
                             customerDetailsService.getUserDetails().getRol());
                     LoginResponseDTO loginResponseDTO = new LoginResponseDTO();
                     loginResponseDTO.setToken(token);
+                    UserResponseDTO user = userMapper.convertToDTO(userRepository.findByUsername(loginRequestDTO.getEmail())
+                            .orElseThrow(() -> new RuntimeException("Usuario no encontrado con el email:" + loginRequestDTO.getEmail())));
+                    loginResponseDTO.setUser(user);
                     return loginResponseDTO;
                 }
             }
